@@ -1,3 +1,6 @@
+import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
+import { JsxElement } from "typescript"
+
 export interface CountryFlags {
     small: string,
     medium: string,
@@ -19,9 +22,12 @@ export interface CountryData {
 }
 
 export interface CountryColumn {
-    id: string,
+    id: 'name' | 'official_name' | 'alpha3Code' | 'numericCode' | 'callingCode' | 'capital' | 'region' | 'subregion' | 'population' | 'timezones' | 'flag',
     label: string,
     minWidth?: number,
-    align?: 'right',
-    format?: (value: number) => string
+    align?: 'right' | 'center' | 'left',
+    formatFlag?: (value: CountryFlags) => ReactJSXElement,
+    formatUtc?: (value: Array<string>) => ReactJSXElement
 }
+
+

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Grid from '@mui/material/Unstable_Grid2';
-import { MyChartContainer } from '../Styles/MyChartStyles';
 import {
 	BarChart,
 	CartesianGrid,
@@ -12,13 +11,16 @@ import {
 	Bar,
 	ResponsiveContainer
 } from 'recharts';
-
-
+import { Box } from '@mui/material';
+import { CountryData } from '../Utils/types';
+import { useAppSelector } from '../app/hooks';
 
 const MyChart = () => {
+	
+	
 	const data = [
 		{
-			"name": "Page A",
+			"name": "name",
 			"uv": 4000,
 			"pv": 2400,
 			"color": "black"
@@ -56,23 +58,17 @@ const MyChart = () => {
 	];
 
 	return (
-		<Grid>
-			<MyChartContainer>
-				{/* <MyChartWrapper> */}
-					<ResponsiveContainer width="80%" height="50%">
-						<BarChart width={1500} height={450} data={data}>
-							<CartesianGrid strokeDasharray="3 3"/>
-							<XAxis dataKey="name" />
-							<YAxis tick={{stroke: 'red', strokeWidth: 1}} />
-							<Tooltip />
-							<Legend />
-							<Bar dataKey="pv" fill="#8884d8" />
-							<Bar dataKey="uv" fill="#82ca9d" />
-						</BarChart>
-					</ResponsiveContainer>
-				{/* </MyChartWrapper> */}
-			</MyChartContainer>
-		</Grid>
+		<ResponsiveContainer width="80%" height="30%">
+			<BarChart width={1500} height={450} data={data}>
+				<CartesianGrid strokeDasharray="3 3" />
+				<XAxis dataKey="name" />
+				<YAxis tick={{ stroke: 'red', strokeWidth: 1 }} />
+				<Tooltip />
+				<Legend />
+				<Bar dataKey="pv" fill="#8884d8" />
+				<Bar dataKey="uv" fill="#82ca9d" />
+			</BarChart>
+		</ResponsiveContainer>
 	)
 }
 
