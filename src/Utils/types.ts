@@ -28,3 +28,19 @@ export interface CountryColumn {
     formatFlag?: (value: CountryFlags) => ReactJSXElement,
     formatUtc?: (value: Array<string>) => ReactJSXElement
 }
+
+export interface DataChart {
+	name: string,
+	population: string | number,
+	color?: string
+}
+
+export interface TooltipData {
+    payload?: Array<TooltipPayload>,
+    active?: boolean,
+    label?: string
+}
+
+interface TooltipPayload {
+    value: number
+} 

@@ -6,7 +6,7 @@ export const columns: CountryColumn[] = [
     {
         id: 'name',
         label: 'Country name',
-        minWidth: 100
+        minWidth: 140
     },
     {
         id: 'official_name',
@@ -46,7 +46,7 @@ export const columns: CountryColumn[] = [
     {
         id: 'population',
         label: 'Population',
-        minWidth: 100
+        minWidth: 130
     },
     {
         id: 'timezones',
