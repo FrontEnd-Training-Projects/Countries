@@ -7,7 +7,8 @@ export const TooltipBox = styled(Box)(({ theme }) => ({
     backgroundColor: '#ece1e1',
     display: 'flex',
     flexDirection: 'column',
-    padding: '15px'
+    padding: '15px',
+    boxShadow: 'rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px'
 }));
 
 export const TooltipHeader = styled(Typography)(({ theme }) => ({
