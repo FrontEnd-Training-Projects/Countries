@@ -2,13 +2,13 @@ import React from 'react';
 import './App.css';
 import MyChart from './Components/MyChart';
 import CountriesTable from './Components/CountriesTable';
-import { AppContainer } from './Styles/AppContainerStyle';
 import Grid from '@mui/material/Unstable_Grid2';
+import { AppContainer } from './Styles/AppStyle';
 
 function App() {
 	return (
 		<Grid>
-			<AppContainer>
+			<AppContainer >
 				<MyChart />
 				<CountriesTable />
 			</AppContainer>

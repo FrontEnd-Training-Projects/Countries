@@ -1,73 +1,90 @@
 import React from 'react';
+import { Box } from "@mui/material";
 
-import Grid from '@mui/material/Unstable_Grid2';
 import {
-	BarChart,
 	CartesianGrid,
 	XAxis,
 	Tooltip,
 	YAxis,
+	AreaChart,
+	Area,
+	ResponsiveContainer,
 	Legend,
-	Bar,
-	ResponsiveContainer
+	Label
 } from 'recharts';
-import { Box } from '@mui/material';
-import { CountryData } from '../Utils/types';
+import { CountryData, DataChart, TooltipData } from '../Utils/types';
 import { useAppSelector } from '../app/hooks';
+import { TooltipBox, TooltipDescr, TooltipHeader } from '../Styles/TooltipStyle';
 
 const MyChart = () => {
-	
-	
-	const data = [
-		{
-			"name": "name",
-			"uv": 4000,
-			"pv": 2400,
-			"color": "black"
-		},
-		{
-			"name": "Page B",
-			"uv": 3000,
-			"pv": 1398
-		},
-		{
-			"name": "Page C",
-			"uv": 2000,
-			"pv": 9800
-		},
-		{
-			"name": "Page D",
-			"uv": 2780,
-			"pv": 3908
-		},
-		{
-			"name": "Page E",
-			"uv": 1890,
-			"pv": 4800
-		},
-		{
-			"name": "Page F",
-			"uv": 2390,
-			"pv": 3800
-		},
-		{
-			"name": "Page G",
-			"uv": 3490,
-			"pv": 4300
+	const pages: Array<number> = useAppSelector(state => state.pagesReducer);
+	const page = pages[0];
+	const rowsPerPage = pages[1];
+	const allCountriesState: CountryData[] = useAppSelector(state => state.allCountriesReducer).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+
+	const data1 = allCountriesState.map((c) => {
+		const chart: DataChart = {
+			name: c.name,
+			population: c.population,
+			color: "white"
 		}
-	];
+		return chart;
+	});
+
+	const tickFormatter = (value: number) => {
+		const res = value.toLocaleString().split(",");
+		if (res.length === 3) {
+			return res[0].concat("M");
+		}
+		else if (res.length === 4) {
+			return res[0].concat(",").concat(res[1]).concat("B");
+		}
+		return value.toLocaleString();
+	};
+
+	const CustomTooltip = ({ active, payload, label }: TooltipData) => {
+		if (active) {
+			return (
+				<TooltipBox>
+					<TooltipHeader>{`${label} :`}</TooltipHeader>
+					<Box sx={{ display: 'flex' }}>
+						<TooltipDescr>Population:</TooltipDescr>
+						<p>{payload![0].value.toLocaleString()}</p>
+					</Box>
+				</TooltipBox>
+			);
+		}
+		return null;
+	};
 
 	return (
 		<ResponsiveContainer width="80%" height="30%">
-			<BarChart width={1500} height={450} data={data}>
+			<AreaChart data={data1}>
+				<XAxis dataKey="name"
+					tick={{ stroke: 'rgb(154 169 175)', strokeWidth: 0.5 }}
+				/>
+				<YAxis
+					tick={{ stroke: 'rgb(154 169 175)', strokeWidth: 0.5 }}
+					tickFormatter={tickFormatter}
+				>
+					<Label angle={-90}
+						position="insideBottomLeft"
+						value="M-Million/B-Billion"
+						style={{ fill: 'rgb(154 169 175)', fontSize: '90%' }}
+					>
+					</Label>
+				</YAxis>
 				<CartesianGrid strokeDasharray="3 3" />
-				<XAxis dataKey="name" />
-				<YAxis tick={{ stroke: 'red', strokeWidth: 1 }} />
-				<Tooltip />
-				<Legend />
-				<Bar dataKey="pv" fill="#8884d8" />
-				<Bar dataKey="uv" fill="#82ca9d" />
-			</BarChart>
+				<Tooltip content={<CustomTooltip />} />
+				<Legend iconType="square" iconSize={7} />
+				<Area type="monotone"
+					dataKey="population"
+					stroke="#8884d8"
+					fillOpacity={0.5}
+					fill="#171ed4"
+					dot={{ stroke: 'black', strokeWidth: 1 }}
+				/>
+			</AreaChart>
 		</ResponsiveContainer>
 	)
 }

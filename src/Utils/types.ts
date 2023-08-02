@@ -1,5 +1,4 @@
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
-import { JsxElement } from "typescript"
 
 export interface CountryFlags {
     small: string,
@@ -25,9 +24,10 @@ export interface CountryColumn {
     id: 'name' | 'official_name' | 'alpha3Code' | 'numericCode' | 'callingCode' | 'capital' | 'region' | 'subregion' | 'population' | 'timezones' | 'flag',
     label: string,
     minWidth?: number,
-    align?: 'right' | 'center' | 'left',
-    formatFlag?: (value: CountryFlags) => ReactJSXElement,
-    formatUtc?: (value: Array<string>) => ReactJSXElement
+    align?: 'right',
+    format?: (value: number) => string
 }
 
-
+interface TooltipPayload {
+    value: number
+} 

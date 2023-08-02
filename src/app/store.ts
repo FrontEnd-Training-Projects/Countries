@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import { allCountriesReducer } from '../Reducers/allCountriesReducer';
+import { pagesReducer } from '../Reducers/pagesReducer';
 
 
 export const store = configureStore({
 	reducer: {
-		allCountriesReducer: allCountriesReducer
+		allCountriesReducer: allCountriesReducer,
+		pagesReducer: pagesReducer
 	},
 });
 
