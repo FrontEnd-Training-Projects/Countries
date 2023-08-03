@@ -11,6 +11,8 @@ import MenuTable from './MenuTable';
 
 const CountriesTable = () => {
 	const allCountriesState: CountryData[] = useAppSelector(state => state.allCountriesReducer);
+	const [allCountries, setAllCountries] = useState<Array<CountryData>>([]);
+	const sortingData: string = useAppSelector(state => state.dataForSortingReducer);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const dispatch = useAppDispatch();
@@ -31,19 +33,26 @@ const CountriesTable = () => {
 		dispatch(fetchAllCountries());
 	}
 
-	const checkAndSortRows = (lable: string) => {
-		if (lable ==='Country name' || lable === 'Population') {
-			
-		}
+	const checkAndSortRows = () => {
+		if (sortingData === 'Sort ascending') {
+			setAllCountries(allCountriesState.slice().sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0));
+			return true;
+		}	
+		return false;
 	};
 
+	const checkLabelForRendering = (lable: string): boolean => {
+		return lable === 'Country name' || lable === 'Population' ? true : false;
+	};
+	
 	useEffect(() => {
 		getQuote();
+		
 		dispatch(putPage(page));
 		dispatch(putRowsPerPage(rowsPerPage));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
+	console.log(sortingData)
 	return (
 		<Grid container sx={{ width: '80%' }}>
 			<Grid>
@@ -59,13 +68,14 @@ const CountriesTable = () => {
 											align={column.align}
 										>
 											{column.label}
-											{(column.label === 'Country name' || column.label === 'Population') && <MenuTable /> }
+											{checkLabelForRendering(column.label) && <MenuTable />}
+											{sortingData && checkAndSortRows()}
 										</TableCell>
 									))}
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{allCountriesState
+								{allCountries
 									.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 									.map((row) => {
 										return (
@@ -90,7 +100,7 @@ const CountriesTable = () => {
 						sx={{ minHeight: '10px' }}
 						rowsPerPageOptions={[10, 25, 100]}
 						component="div"
-						count={allCountriesState.length}
+						count={allCountries.length}
 						rowsPerPage={rowsPerPage}
 						page={page}
 						onPageChange={handleChangePage}
@@ -98,7 +108,6 @@ const CountriesTable = () => {
 					/>
 				</Paper >
 			</Grid>
-
 		</Grid>
 	)
 }
