@@ -40,7 +40,7 @@ const MyChart = () => {
 		else if (res.length === 4) {
 			return res[0].concat(",").concat(res[1]).concat("B");
 		}
-		return value.toLocaleString();
+		return value.toLocaleString("en-US");
 	};
 
 	const CustomTooltip = ({ active, payload, label }: TooltipData) => {
