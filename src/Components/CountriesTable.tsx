@@ -45,8 +45,8 @@ const CountriesTable = () => {
 	}, []);
 
 	return (
-		<Grid container sx={{ width: '80%' }}>
-			<Grid>
+		<Grid container sx={{ maxWidth: '80%', display: 'flex', justifyContent: 'center'}}>
+			<Grid >
 				<Paper sx={{ width: '100%', minHeight: '300px', overflow: 'hidden', marginTop: '20px' }}>
 					<TableContainer sx={{ maxHeight: 440 }}>
 						<Table stickyHeader aria-label="sticky table">

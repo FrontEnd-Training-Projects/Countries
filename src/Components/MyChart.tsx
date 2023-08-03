@@ -32,8 +32,9 @@ const MyChart = () => {
 	});
 
 	const tickFormatter = (value: number) => {
-		const res = value.toLocaleString().split(",");
+		const res = value.toLocaleString("en-US").split(",");
 		if (res.length === 3) {
+
 			return res[0].concat("M");
 		}
 		else if (res.length === 4) {
@@ -49,7 +50,7 @@ const MyChart = () => {
 					<TooltipHeader>{`${label} :`}</TooltipHeader>
 					<Box sx={{ display: 'flex' }}>
 						<TooltipDescr>Population:</TooltipDescr>
-						<p>{payload![0].value.toLocaleString()}</p>
+						<p>{payload![0].value.toLocaleString("en-US")}</p>
 					</Box>
 				</TooltipBox>
 			);
@@ -58,6 +59,7 @@ const MyChart = () => {
 	};
 
 	return (
+
 		<ResponsiveContainer width="80%" height="30%">
 			<AreaChart data={data1}>
 				<XAxis dataKey="name"
