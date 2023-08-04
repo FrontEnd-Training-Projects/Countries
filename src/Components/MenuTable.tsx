@@ -2,13 +2,18 @@ import { Box, IconButton, Menu, MenuItem } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { optionsMenu } from '../Utils/constants';
-import { putDataForSorting } from '../Reducers/dataForSortingReducer';
+import { putDataForSorting, putDataLabel } from '../Reducers/allCountriesReducer';
 import { useAppDispatch } from '../app/hooks';
 
-const MenuTable = () => {
+interface Props {
+	label: string
+}
+
+const MenuTable = ({label}: Props) => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
 	const [dataSort, setDataSort] = useState<string>('');
+	const [menuLabel, setMenuLabel] = useState<string>('');
 	const dispatch = useAppDispatch();
 
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -20,12 +25,14 @@ const MenuTable = () => {
 	};
 
 	const handleCloseMenuItem = (event: React.MouseEvent<HTMLElement>) => {
+		setMenuLabel(label);
 		setDataSort(event.currentTarget.innerText);
 		handleClose();
 	};
 
 	useEffect(() => {
 		dataSort && dispatch(putDataForSorting(dataSort));
+		label && dispatch(putDataLabel(menuLabel));
 	}, [dataSort, dispatch]);
 
 	return (

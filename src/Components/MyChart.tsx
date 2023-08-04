@@ -12,7 +12,7 @@ import {
 	Legend,
 	Label
 } from 'recharts';
-import { CountryData, DataChart, TooltipData } from '../Utils/types';
+import { CountriesData, DataChart, TooltipData } from '../Utils/types';
 import { useAppSelector } from '../app/hooks';
 import { TooltipBox, TooltipDescr, TooltipHeader } from '../Styles/TooltipStyle';
 
@@ -20,9 +20,13 @@ const MyChart = () => {
 	const pages: Array<number> = useAppSelector(state => state.pagesReducer);
 	const page = pages[0];
 	const rowsPerPage = pages[1];
-	const allCountriesState: CountryData[] = useAppSelector(state => state.allCountriesReducer).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
-
-	const data1 = allCountriesState.map((c) => {
+	const countries: CountriesData = {
+		allCountriesState: useAppSelector(state => state.allCountriesReducer).allCountriesState.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+		sortingData: '',
+		label: ''
+	}
+	
+	const data1 = countries.allCountriesState.map((c) => {
 		const chart: DataChart = {
 			name: c.name,
 			population: c.population,
@@ -34,7 +38,6 @@ const MyChart = () => {
 	const tickFormatter = (value: number) => {
 		const res = value.toLocaleString("en-US").split(",");
 		if (res.length === 3) {
-
 			return res[0].concat("M");
 		}
 		else if (res.length === 4) {
@@ -59,7 +62,6 @@ const MyChart = () => {
 	};
 
 	return (
-
 		<ResponsiveContainer width="80%" height="30%">
 			<AreaChart data={data1}>
 				<XAxis dataKey="name"

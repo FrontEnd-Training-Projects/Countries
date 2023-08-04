@@ -1,6 +1,4 @@
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
 import { ReactElement } from "react"
-import { JsxElement } from "typescript"
 
 export interface CountryFlags {
     small: string,
@@ -46,3 +44,17 @@ export interface TooltipData {
 interface TooltipPayload {
     value: number
 } 
+
+export interface CountriesData {
+    allCountriesState: CountryData[],
+    sortingData: DataSorting | string,
+    label: DataLabel | string,
+} 
+
+export interface DataSorting {
+    dataSorting: string
+}
+
+export interface DataLabel {
+    label: string
+}
