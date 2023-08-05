@@ -21,8 +21,6 @@ const allCountriesSlice = createSlice({
             return state;
         },
         putAllCountries(state, action: PayloadAction<CountriesData>) {
-            console.log(state.sortingData)
-            console.log(state.label)
             if (state.sortingData === 'Sort ascending' && state.label === 'Country name') {
                 state.allCountriesState = action.payload.allCountriesState.slice().sort((a, b) => (a.name > b.name) ? 1 : (a.name < b.name) ? -1 : 0);
                 return state;

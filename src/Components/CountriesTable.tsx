@@ -8,9 +8,10 @@ import { putPage, putRowsPerPage } from '../Reducers/pagesReducer';
 import { columns } from '../Utils/dataConstants';
 import Grid from '@mui/material/Unstable_Grid2';
 import MenuTable from './MenuTable';
+import SearchAndFilter from './SearchAndFilter';
 
 const CountriesTable = () => {
-	let countries: CountriesData = useAppSelector(state => state.allCountriesReducer);
+	const countries: CountriesData = useAppSelector(state => state.allCountriesReducer);
 	const sortingData: DataSorting | string = useAppSelector(state => state.allCountriesReducer).sortingData;
 	const dataLabel: DataLabel | string = useAppSelector(state => state.allCountriesReducer).label;
  	const [page, setPage] = useState(0);
@@ -45,7 +46,9 @@ const CountriesTable = () => {
 	
 	return (
 		<Grid container sx={{ maxWidth: '80%', display: 'flex', justifyContent: 'center' }}>
+			
 			<Grid >
+				<SearchAndFilter allCountries={countries}/>
 				<Paper sx={{ width: '100%', minHeight: '300px', overflow: 'hidden', marginTop: '20px' }}>
 					<TableContainer sx={{ maxHeight: 440 }}>
 						<Table stickyHeader aria-label="sticky table">
