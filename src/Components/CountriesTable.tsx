@@ -47,7 +47,6 @@ const CountriesTable = () => {
 	
 	useEffect(() => {
 		getQuote();
-		
 		dispatch(putPage(page));
 		dispatch(putRowsPerPage(rowsPerPage));
 	// eslint-disable-next-line react-hooks/exhaustive-deps
