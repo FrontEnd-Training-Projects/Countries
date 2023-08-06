@@ -5,6 +5,7 @@ import CountriesTable from './Components/CountriesTable';
 import Grid from '@mui/material/Unstable_Grid2';
 import { AppContainer } from './Styles/AppStyle';
 
+
 function App() {
 	return (
 		<Grid>

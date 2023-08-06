@@ -1,9 +1,9 @@
 import { putAllCountries } from "../Reducers/allCountriesReducer";
 import { API_KEY, allCountriesRequest } from "../Utils/constants";
-import { CountryData } from "../Utils/types";
+import { CountriesData, CountryData, DataLabel, DataSorting } from "../Utils/types";
 import { AppDispatch } from "../app/store"
 
-export const fetchAllCountries = () => {
+export const fetchAllCountries = (sortingData: DataSorting | string, dataLabel: DataLabel | string) => {
     return async (dispatch: AppDispatch) => {
         if (!localStorage.getItem('allCountries')) {
             try {
@@ -17,7 +17,11 @@ export const fetchAllCountries = () => {
                 );
 
                 if (response.ok) {
-                    const allCountries: CountryData[] = [];
+                    const allCountries: CountriesData = {
+                        allCountriesState: [],
+                        sortingData: "",
+                        label: ""
+                    };
                     const data: CountryData[] = await response.json();
                     Object.entries(data).forEach(c => {
                         const country: CountryData = {
@@ -33,7 +37,13 @@ export const fetchAllCountries = () => {
                             timezones: c[1].timezones,
                             flag: c[1].flag
                         }
-                        allCountries.push(country);
+                        allCountries.allCountriesState.push(country);
+                        if (allCountries.sortingData !== "") {
+                            allCountries.sortingData = sortingData;
+                        }
+                        if (allCountries.label !== "") {
+                            allCountries.label = dataLabel;
+                        }
                     });
                     localStorage.setItem('allCountries', JSON.stringify(allCountries));
                     dispatch(putAllCountries(allCountries));

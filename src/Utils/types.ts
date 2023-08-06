@@ -1,4 +1,4 @@
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace"
+import { ReactElement } from "react"
 
 export interface CountryFlags {
     small: string,
@@ -25,8 +25,8 @@ export interface CountryColumn {
     label: string,
     minWidth?: number,
     align?: 'right' | 'left' | 'center',
-    formatFlag?: (value: CountryFlags) => ReactJSXElement,
-    formatUtc?: (value: Array<string>) => ReactJSXElement
+    formatUtc?: (value: Array<string>) => ReactElement,
+    formatFlag?: (value: CountryFlags) => ReactElement
 }
 
 export interface DataChart {
@@ -44,3 +44,17 @@ export interface TooltipData {
 interface TooltipPayload {
     value: number
 } 
+
+export interface CountriesData {
+    allCountriesState: CountryData[],
+    sortingData: DataSorting | string,
+    label: DataLabel | string,
+} 
+
+export interface DataSorting {
+    dataSorting: string
+}
+
+export interface DataLabel {
+    label: string
+}
