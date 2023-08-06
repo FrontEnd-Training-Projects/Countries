@@ -1,66 +1,38 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2/Grid2'
-import React, { ChangeEvent, useState, useEffect } from 'react'
+import React, { ChangeEvent, useState, useEffect, MouseEvent, SyntheticEvent } from 'react'
 import { MyFromControl, MyTextField } from '../Styles/SearchAndFilterStyle'
-import { CountriesData, CountryData } from '../Utils/types'
+import { CountriesData } from '../Utils/types'
 import { useAppDispatch } from '../app/hooks'
-import { putAllCountries } from '../Reducers/allCountriesReducer'
-import { fetchAllCountries } from '../Actions/fetchAcions'
 
-interface Props {
-	[x: string]: any
-	allCountries: CountriesData
-}
 
-const SearchAndFilter = (allCountries: Props) => {
+const SearchAndFilter = ({allCountriesState, sortingData, label}: CountriesData) => {
 	const [region, setRegion] = useState('');
-	const [serchedCountry, setSearchedCountry] = useState('');
+	const [searchedCountry, setSearchedCountry] = useState('');
 	const [searchedCountryForCapital, setSearchedCountryForCapital] = useState('');
 	const dispatch = useAppDispatch();
+
 	const handleChangeCountry = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setSearchedCountry(event.target.value.trim());
+		setSearchedCountry(event.target.value.trim().toLowerCase());
 	};
 
 	const handleChangeCountryForCapital = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-		setSearchedCountryForCapital(event.target.value.trim());
+		setSearchedCountryForCapital(event.target.value.trim().toLowerCase());
 	};
 
 	const handleChangeRegion = (event: SelectChangeEvent) => {
-		setRegion(event.target.value as string);
+		setRegion(event.target.value.toLowerCase() as string);
 	};
 
-	const searchCountry = () => {
-		
-		
+	
 
-		allCountries.allCountries.allCountriesState.map((country: CountryData) => {
-		
-			const c: CountryData | null = country.name === serchedCountry ? country : null;
-			if (c !== null) {
-				const res: CountriesData = {
-					allCountriesState: [c],
-					sortingData: allCountries.allCountries.sortingData,
-					label: allCountries.allCountries.label
-				}
-				dispatch(putAllCountries(res));
-			}
-			return c;
-		})
-		if (serchedCountry === '') {
-			console.log( allCountries.allCountries.allCountriesState)
-			const res1: CountriesData = {
-				allCountriesState: allCountries.allCountries.allCountriesState,
-				sortingData: allCountries.allCountries.sortingData,
-				label: allCountries.allCountries.label
-			};
-			dispatch(fetchAllCountries(allCountries.allCountries.sortingData,  allCountries.allCountries.label));
-			return res1;
-		}
+	const checkFetch = () => {
+
 	};
 
 	useEffect(() => {
-		searchCountry();
-	}, [serchedCountry]);
+		
+	}, [searchedCountry]);
 
 
 	return (
@@ -69,7 +41,8 @@ const SearchAndFilter = (allCountries: Props) => {
 				<MyTextField
 					variant='outlined'
 					label='Search you country'
-					onChange={event => handleChangeCountry(event)}
+					onBlur={event => handleChangeCountry(event)}
+					
 				>
 				</MyTextField>
 			</Grid>
@@ -77,7 +50,7 @@ const SearchAndFilter = (allCountries: Props) => {
 				<MyTextField
 					variant='outlined'
 					label='Search your country for capital'
-					onChange={event => handleChangeCountryForCapital(event)}
+					onBlur={event => handleChangeCountryForCapital(event)}
 				>
 				</MyTextField>
 			</Grid>
