@@ -42,13 +42,14 @@ const CountriesTable = () => {
 		getQuote();
 		dispatch(putPage(page));
 		dispatch(putRowsPerPage(rowsPerPage));
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [sortingData, dataLabel]);
 	
 	return (
 		<Grid container sx={{ maxWidth: '80%', display: 'flex', justifyContent: 'center' }}>
 			
 			<Grid >
-				<SearchAndFilter allCountries={countries}/>
+				<SearchAndFilter {...countries}/>
 				<Paper sx={{ width: '100%', minHeight: '300px', overflow: 'hidden', marginTop: '20px' }}>
 					<TableContainer sx={{ maxHeight: 440 }}>
 						<Table stickyHeader aria-label="sticky table">
