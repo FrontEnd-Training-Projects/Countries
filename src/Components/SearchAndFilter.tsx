@@ -2,13 +2,14 @@ import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2/Grid2'
 import React, { ChangeEvent, useState, useEffect, FocusEvent } from 'react'
 import { MyFromControl, MyTextField } from '../Styles/SearchAndFilterStyle'
-import { CountriesData } from '../Utils/types'
+import { CountriesData, CountryData } from '../Utils/types'
 import { useAppDispatch } from '../app/hooks'
 import { fetchAllCountries, fetchCountryForCapital, fetchCountryForName } from '../Actions/fetchAcions'
 import CloseIcon from '@mui/icons-material/Close';
+import { isSetIterator } from 'util/types'
 
 const SearchAndFilter = ({ allCountriesState, sortingData, label }: CountriesData) => {
-	const [region, setRegion] = useState('');
+	const [regionState, setRegionState] = useState('');
 	const [searchedCountry, setSearchedCountry] = useState('');
 	const [searchedCountryForCapital, setSearchedCountryForCapital] = useState('');
 	const dispatch = useAppDispatch();
@@ -22,14 +23,21 @@ const SearchAndFilter = ({ allCountriesState, sortingData, label }: CountriesDat
 	};
 
 	const handleChangeRegion = (event: SelectChangeEvent) => {
-		setRegion(event.target.value.toLowerCase() as string);
+		setRegionState(event.target.value as string);
+	};
+
+	const getRegions = () => {
+		const regionsSet = new Set<string>(Object.values(allCountriesState.map(c => c.region)));
+		const regions: Array<string> = [];
+		regionsSet.forEach(r => regions.push(r));
+		return regions;
 	};
 
 	useEffect(() => {
 		dispatch(fetchCountryForName(searchedCountry, allCountriesState));
 		dispatch(fetchCountryForCapital(searchedCountryForCapital, allCountriesState));
 		!(searchedCountry || searchedCountryForCapital) && dispatch(fetchAllCountries(sortingData, label));
-		
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [searchedCountry, searchedCountryForCapital]);
 
@@ -60,13 +68,19 @@ const SearchAndFilter = ({ allCountriesState, sortingData, label }: CountriesDat
 					<Select sx={{ color: 'rgb(154 169 175)' }}
 						labelId="demo-simple-select-label"
 						id="demo-simple-select"
-						value={region}
+						value={regionState}
 						label="Region"
 						onChange={handleChangeRegion}
+						defaultValue={regionState}
 					>
-						<MenuItem value={10}>Ten</MenuItem>
-						<MenuItem value={20}>Twenty</MenuItem>
-						<MenuItem value={30}>Thirty</MenuItem>
+						<MenuItem value="">
+							<em>None</em>
+						</MenuItem>
+						{getRegions().map(reg => {
+							return (
+								<MenuItem key={reg} value={reg}>{reg}</MenuItem>
+							);
+						})}
 					</Select>
 				</MyFromControl>
 			</Grid>
