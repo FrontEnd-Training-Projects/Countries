@@ -2,6 +2,7 @@ import { putAllCountries } from "../Reducers/allCountriesReducer";
 import { API_KEY, allCountriesRequest, getCountryByCapital, getCountryByName } from "../Utils/constants";
 import { CountriesData, CountryData, DataLabel, DataSorting } from "../Utils/types";
 import { AppDispatch } from "../app/store"
+import { chekingLocalStorage, setDataResponse } from "./functionsForActions";
 
 export const fetchAllCountries = (sortingData: DataSorting | string, dataLabel: DataLabel | string) => {
     return async (dispatch: AppDispatch) => {
@@ -17,34 +18,14 @@ export const fetchAllCountries = (sortingData: DataSorting | string, dataLabel: 
                 );
 
                 if (response.ok) {
-                    const allCountries: CountriesData = {
-                        allCountriesState: [],
-                        sortingData: "",
-                        label: ""
-                    };
                     const data: CountryData[] = await response.json();
-                    Object.entries(data).forEach(c => {
-                        const country: CountryData = {
-                            name: c[1].name,
-                            official_name: c[1].official_name,
-                            alpha3Code: c[1].alpha3Code,
-                            numericCode: c[1].numericCode,
-                            callingCode: c[1].callingCode,
-                            capital: c[1].capital,
-                            region: c[1].region,
-                            subregion: c[1].subregion,
-                            population: c[1].population,
-                            timezones: c[1].timezones,
-                            flag: c[1].flag
-                        }
-                        allCountries.allCountriesState.push(country);
-                        if (allCountries.sortingData !== "") {
-                            allCountries.sortingData = sortingData;
-                        }
-                        if (allCountries.label !== "") {
-                            allCountries.label = dataLabel;
-                        }
-                    });
+                    const allCountries: CountriesData = setDataResponse(data);
+                    if (allCountries.sortingData !== "") {
+                        allCountries.sortingData = sortingData;
+                    }
+                    if (allCountries.label !== "") {
+                        allCountries.label = dataLabel;
+                    }
                     localStorage.setItem('allCountries', JSON.stringify(allCountries));
                     dispatch(putAllCountries(allCountries));
                 }
@@ -57,12 +38,13 @@ export const fetchAllCountries = (sortingData: DataSorting | string, dataLabel: 
     }
 };
 
-export const fetchCountryForName = (countryName: string, allCountries: CountryData[]) => {
+export const fetchCountryForName = (countryForName: string, allCountries: CountryData[]) => {
     return async (dispatch: AppDispatch) => {
-        const res: CountryData[] = allCountries.filter(c => c.name === countryName);
-        if (res[0]) {
+
+        const res: CountryData[] = allCountries.filter(c => c.name === countryForName);
+        if (res[0] || (res[0] && !localStorage.getItem('countryForName'))) {
             try {
-                const response = await fetch(getCountryByName.concat(countryName).concat("?apikey=").concat(API_KEY),
+                const response = await fetch(getCountryByName.concat(countryForName).concat("?apikey=").concat(API_KEY),
                     {
                         method: 'GET',
                         headers: {
@@ -72,28 +54,8 @@ export const fetchCountryForName = (countryName: string, allCountries: CountryDa
                 );
 
                 if (response.ok) {
-                    const countryForName: CountriesData = {
-                        allCountriesState: [],
-                        sortingData: "",
-                        label: ""
-                    };
                     const data: CountryData[] = await response.json();
-                    Object.entries(data).forEach(c => {
-                        const country: CountryData = {
-                            name: c[1].name,
-                            official_name: c[1].official_name,
-                            alpha3Code: c[1].alpha3Code,
-                            numericCode: c[1].numericCode,
-                            callingCode: c[1].callingCode,
-                            capital: c[1].capital,
-                            region: c[1].region,
-                            subregion: c[1].subregion,
-                            population: c[1].population,
-                            timezones: c[1].timezones,
-                            flag: c[1].flag
-                        }
-                        countryForName.allCountriesState.push(country);
-                    });
+                    const countryForName: CountriesData = setDataResponse(data);
                     localStorage.setItem('countryForName', JSON.stringify(countryForName));
                     dispatch(putAllCountries(countryForName));
                 }
@@ -101,7 +63,7 @@ export const fetchCountryForName = (countryName: string, allCountries: CountryDa
 
             }
         } else {
-            localStorage.getItem('countryForName') && dispatch(putAllCountries(JSON.parse(localStorage.getItem('countryForName')!)));
+            localStorage.getItem('searchedCountry') && dispatch(putAllCountries(JSON.parse(localStorage.getItem('searchedCountry')!)));
         }
     }
 };
@@ -109,7 +71,9 @@ export const fetchCountryForName = (countryName: string, allCountries: CountryDa
 export const fetchCountryForCapital = (capital: string, allCountries: CountryData[]) => {
     return async (dispatch: AppDispatch) => {
         const res = allCountries.filter(c => c.capital === capital);
-        if (res[0]) {
+        const identifier = chekingLocalStorage('countryForCapital', capital, allCountries);
+        console.log(identifier)
+        if (res[0] || (res[0] && !localStorage.getItem('countryForCapital')) || (identifier !== undefined && identifier !== '')) {
             try {
                 const response = await fetch(getCountryByCapital.concat(capital).concat("?apikey=").concat(API_KEY),
                     {
@@ -121,28 +85,8 @@ export const fetchCountryForCapital = (capital: string, allCountries: CountryDat
                 );
 
                 if (response.ok) {
-                    const countryForCapital: CountriesData = {
-                        allCountriesState: [],
-                        sortingData: "",
-                        label: ""
-                    };
                     const data: CountryData[] = await response.json();
-                    Object.entries(data).forEach(c => {
-                        const country: CountryData = {
-                            name: c[1].name,
-                            official_name: c[1].official_name,
-                            alpha3Code: c[1].alpha3Code,
-                            numericCode: c[1].numericCode,
-                            callingCode: c[1].callingCode,
-                            capital: c[1].capital,
-                            region: c[1].region,
-                            subregion: c[1].subregion,
-                            population: c[1].population,
-                            timezones: c[1].timezones,
-                            flag: c[1].flag
-                        }
-                        countryForCapital.allCountriesState.push(country);
-                    });
+                    const countryForCapital: CountriesData = setDataResponse(data);
                     localStorage.setItem('countryForCapital', JSON.stringify(countryForCapital));
                     dispatch(putAllCountries(countryForCapital));
                 }
@@ -150,7 +94,8 @@ export const fetchCountryForCapital = (capital: string, allCountries: CountryDat
 
             }
         } else {
-            localStorage.getItem('countryForCapital') && dispatch(putAllCountries(JSON.parse(localStorage.getItem('countryForCapital')!)));
+            (identifier === undefined || identifier === '') ? localStorage.getItem('countryForCapital') 
+                : dispatch(putAllCountries(JSON.parse(localStorage.getItem('countryForCapital')!)));
         }
     }
 };

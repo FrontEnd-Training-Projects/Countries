@@ -1,12 +1,12 @@
 import { InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
 import Grid from '@mui/material/Unstable_Grid2/Grid2'
-import React, { ChangeEvent, useState, useEffect, FocusEvent } from 'react'
+import React, { ChangeEvent, useState, useEffect } from 'react'
 import { MyFromControl, MyTextField } from '../Styles/SearchAndFilterStyle'
-import { CountriesData, CountryData } from '../Utils/types'
+import { CountriesData } from '../Utils/types'
 import { useAppDispatch } from '../app/hooks'
 import { fetchAllCountries, fetchCountryForCapital, fetchCountryForName } from '../Actions/fetchAcions'
-import CloseIcon from '@mui/icons-material/Close';
-import { isSetIterator } from 'util/types'
+
+
 
 const SearchAndFilter = ({ allCountriesState, sortingData, label }: CountriesData) => {
 	const [regionState, setRegionState] = useState('');

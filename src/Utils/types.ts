@@ -7,6 +7,7 @@ export interface CountryFlags {
 }
 
 export interface CountryData {
+    toIdentifyParameter?(countryItem: string, allCountries: CountryData[]): string | undefined,
     name: string,
     official_name: string,
     alpha3Code: string,
