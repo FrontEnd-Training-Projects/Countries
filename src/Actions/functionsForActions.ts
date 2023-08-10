@@ -30,12 +30,11 @@ export const chekingLocalStorage = (storageItem: string, countryItem: string, al
     if (localStorage.getItem(storageItem.toString())) {
         const data: CountriesData = JSON.parse(localStorage.getItem('countryForCapital')!);
         if (toIdentifyParameter(countryItem, allCountries)) {
-            const param = toIdentifyParameter!(countryItem, allCountries);
+            const param = toIdentifyParameter!(countryItem, allCountries) as keyof typeof allCountries[0];
             if (param) {
                 const res: CountryData[] = data.allCountriesState.filter(country => country[param] === countryItem);
                 identifier = res[0] && res[0].name;
             }
-
         }
     }
     return identifier;

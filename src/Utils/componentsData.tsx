@@ -11,47 +11,47 @@ export const columns: CountryColumn[] = [
 	{
 		id: 'official_name',
 		label: 'Official country name',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'alpha3Code',
 		label: 'Alpha code',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'numericCode',
 		label: 'Numeric code',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'callingCode',
 		label: 'Calling code',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'capital',
 		label: 'Capital',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'region',
 		label: 'Region',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'subregion',
 		label: 'Subregion',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'population',
 		label: 'Population',
-		minWidth: 100
+		minWidth: 80
 	},
 	{
 		id: 'timezones',
 		label: 'Timezones',
-		minWidth: 100,
+		minWidth: 80,
 		formatUtc: (value: Array<string>) => {
 			return (
 				<FormControl variant="standard" sx={{ m: 1, minWidth: 100 }}>

@@ -18,7 +18,12 @@ export interface CountryData {
     subregion: string,
     population: number,
     timezones: Array<string>,
-    flag: CountryFlags
+    flag: CountryFlags,
+    index?: Index
+}
+
+interface Index {
+    [key: string]: string | undefined
 }
 
 export interface CountryColumn {

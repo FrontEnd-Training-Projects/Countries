@@ -4,7 +4,7 @@ import React, { ChangeEvent, useState, useEffect } from 'react'
 import { MyFromControl, MyTextField } from '../Styles/SearchAndFilterStyle'
 import { CountriesData } from '../Utils/types'
 import { useAppDispatch } from '../app/hooks'
-import { fetchAllCountries, fetchCountryForCapital, fetchCountryForName } from '../Actions/fetchAcions'
+import { fetchAllCountries, fetchCountrieForRegion, fetchCountryForCapital, fetchCountryForName } from '../Actions/fetchAcions'
 
 
 
@@ -36,10 +36,10 @@ const SearchAndFilter = ({ allCountriesState, sortingData, label }: CountriesDat
 	useEffect(() => {
 		dispatch(fetchCountryForName(searchedCountry, allCountriesState));
 		dispatch(fetchCountryForCapital(searchedCountryForCapital, allCountriesState));
-		!(searchedCountry || searchedCountryForCapital) && dispatch(fetchAllCountries(sortingData, label));
-
+		dispatch(fetchCountrieForRegion(regionState, allCountriesState, sortingData, label));
+		!(searchedCountry || searchedCountryForCapital || regionState) && dispatch(fetchAllCountries(sortingData, label));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [searchedCountry, searchedCountryForCapital]);
+	}, [searchedCountry, searchedCountryForCapital, regionState, sortingData, label]);
 
 
 	return (

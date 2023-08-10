@@ -8,7 +8,7 @@ import { AppContainer } from './Styles/AppStyle';
 
 function App() {
 	return (
-		<Grid>
+		<Grid container sx={{height: '100vh'}}>
 			<AppContainer >
 				<MyChart />
 				<CountriesTable />
